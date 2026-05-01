@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing | DREAM CREATION STUDIO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <div id="loader" style="display: none;"></div>
+
+    <nav id="navbar" style="opacity: 1; top: 30px;">
+        <div class="logo">
+            <img src="logo.png" alt="Dream Studio Logo" class="nav-logo-img">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#about">Agency</a></li>
+            <li><a href="index.html#portfolio">Works</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="admin.html">Admin</a></li>
+        </ul>
+
+        <div class="nav-cta">
+            <a href="index.html#contact" class="btn-primary-sm">Start a Project</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="pricing-hero">
+            <div class="container">
+                <span class="section-tag">Investment</span>
+                <h1>Our <span>Pricing</span></h1>
+                <div class="coming-soon-box">
+                    <div class="coming-soon-content">
+                        <h2>COMING SOON</h2>
+                        <p>We are currently restructuring our service packages to better serve your vision. Stay tuned for our new flexible pricing models.</p>
+                        <div class="waitlist">
+                            <a href="index.html#contact" class="btn-primary">Notify Me</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <img src="logo.png" alt="Dream Studio Logo" class="nav-logo-img">
+                    </div>
+                    <p>Pushing the boundaries of digital creation.</p>
+                </div>
+                <div class="footer-socials">
+                    <a href="#">Instagram</a>
+                    <a href="#">Behance</a>
+                    <a href="#">Dribbble</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 DREAM CREATION STUDIO. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple reveal for pricing page
+        gsap.from(".pricing-hero h1", {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            ease: "expo.out",
+            delay: 0.5
+        });
+        gsap.from(".coming-soon-box", {
+            opacity: 0,
+            scale: 0.9,
+            duration: 1.2,
+            ease: "expo.out",
+            delay: 0.8
+        });
+    </script>
+</body>
+</html>

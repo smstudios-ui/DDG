@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details | DREAM CREATION STUDIO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        .project-hero {
+            padding: 150px 10% 80px;
+            text-align: center;
+            background: radial-gradient(circle at top, #200000 0%, #050505 80%);
+        }
+        .project-hero h1 { font-size: clamp(3rem, 8vw, 6rem); margin-bottom: 1rem; }
+        .project-hero .category { color: var(--primary-color); font-weight: 700; text-transform: uppercase; letter-spacing: 4px; }
+        
+        .content-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 5rem 10%;
+        }
+        .media-container {
+            width: 100%;
+            margin-bottom: 4rem;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .media-container img, .media-container iframe {
+            width: 100%;
+            display: block;
+        }
+        .media-container iframe { aspect-ratio: 16/9; border: none; }
+        
+        .description-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #ccc;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 4rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar" style="opacity: 1; top: 30px;">
+        <div class="logo">
+            <img src="logo.png" alt="Logo" class="nav-logo-img">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Back to Home</a></li>
+        </ul>
+    </nav>
+
+    <main id="project-main">
+        <!-- Content injected by JS -->
+    </main>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const projectId = params.get('id');
+            
+            try {
+                const res = await fetch(`${API_URL}/projects/${projectId}`);
+                const project = await res.json();
+
+                if (!project || project.error) {
+                    document.getElementById('project-main').innerHTML = '<div class="content-container"><h1>Project Not Found</h1><a href="index.html" class="back-link">Return Home</a></div>';
+                    return;
+                }
+
+                document.title = `${project.title} | DREAM CREATION STUDIO`;
+
+                let mediaHtml = '';
+                if (project.mediaType === 'youtube' && project.youtubeId) {
+                    mediaHtml = `<iframe src="https://www.youtube.com/embed/${project.youtubeId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+                } else {
+                    mediaHtml = `<img src="${project.image}" alt="${project.title}">`;
+                }
+
+                const html = `
+                    <section class="project-hero">
+                        <span class="category">${project.category}</span>
+                        <h1>${project.title.toUpperCase()}</h1>
+                    </section>
+                    <div class="content-container">
+                        <div class="media-container">
+                            ${mediaHtml}
+                        </div>
+                        <div class="description-text">
+                            ${project.pageContent || project.description || 'No detailed description provided.'}
+                        </div>
+                        <a href="index.html" class="back-link">← Back to Portfolio</a>
+                    </div>
+                `;
+                document.getElementById('project-main').innerHTML = html;
+                
+                gsap.from(".project-hero h1", { opacity: 0, y: 30, duration: 1.2, ease: "expo.out" });
+                gsap.from(".media-container", { opacity: 0, scale: 0.95, duration: 1.5, delay: 0.3, ease: "expo.out" });
+            } catch (err) {
+                console.error("Error loading project:", err);
+                document.getElementById('project-main').innerHTML = '<div class="content-container"><h1>Error Loading Project</h1></div>';
+            }
+        });
+    </script>
+</body>
+</html>

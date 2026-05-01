@@ -1,0 +1,25 @@
+{
+  "name": "dream-creation-studio",
+  "version": "1.0.0",
+  "description": "Digital Creation Agency Portfolio",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "serve": "vite preview",
+    "live": "vite",
+    "server": "node server/index.js"
+  },
+  "dependencies": {
+    "@studio-freight/lenis": "^1.0.42",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "http-server": "^14.1.1",
+    "mongodb": "^7.2.0",
+    "mongoose": "^9.6.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "vite": "^8.0.9"
+  }
+}

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Dream Creation Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --accent: #ff0000;
+            --bg-dark: #030303;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.06);
+            --text-main: #ffffff;
+            --text-dim: #888888;
+            --glow: rgba(255, 0, 0, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+        }
+
+        /* --- SIDEBAR REDESIGN --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border);
+            height: 100vh;
+            padding: 3rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .sidebar-logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+            margin-bottom: 4rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            letter-spacing: -1px;
+        }
+
+        .sidebar-logo span { color: var(--accent); }
+
+        .nav-menu { list-style: none; flex-grow: 1; }
+
+        .nav-item {
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.6) !important; /* Force soft white */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid transparent;
+            position: relative;
+            letter-spacing: 0.5px;
+            text-decoration: none !important; /* Ensure links aren't blue */
+        }
+
+        .nav-item i {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2.5;
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff !important;
+        }
+        
+        .nav-item:hover i {
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(255, 0, 0, 0.12) 0%, transparent 100%);
+            color: #ffffff !important;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 12px 12px 0;
+        }
+
+        .nav-item.active i {
+            color: var(--accent);
+            filter: drop-shadow(0 0 8px var(--accent));
+        }
+
+        .sidebar a {
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 5rem;
+            overflow-y: auto;
+            background: radial-gradient(circle at top right, rgba(255,0,0,0.03), transparent);
+        }
+
+        .section-title { font-size: 3rem; font-weight: 900; letter-spacing: -2px; }
+        .section-sub { color: var(--text-dim); margin-bottom: 4rem; }
+
+        /* --- BENTO CARDS --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            border-radius: 32px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 { font-size: 0.75rem; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 1.5rem; }
+        .stat-card .value { font-size: 3.5rem; font-weight: 900; color: #fff; line-height: 1; }
+
+        /* --- PREMIUM FORMS --- */
+        .glass-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 32px;
+            margin-bottom: 2rem;
+        }
+
+        .input-group label { color: var(--text-dim); font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; display: block; }
+        
+        input, textarea, select {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 1.2rem;
+            border-radius: 16px;
+            color: #fff;
+            width: 100%;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input:focus { border-color: var(--accent); background: rgba(255,255,255,0.06); }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 16px;
+            font-weight: 900;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.4s;
+        }
+
+        .btn-primary:hover { transform: scale(1.02); box-shadow: 0 15px 40px var(--glow); }
+
+        /* --- PREMIUM TABLES --- */
+        .project-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+        .project-table th { text-align: left; padding: 1rem 1.5rem; color: var(--text-dim); font-size: 0.7rem; letter-spacing: 2px; }
+        .project-table td { padding: 1.5rem; background: var(--card-bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .project-table tr td:first-child { border-left: 1px solid var(--border); border-radius: 20px 0 0 20px; }
+        .project-table tr td:last-child { border-right: 1px solid var(--border); border-radius: 0 20px 20px 0; }
+
+        .work-thumb { width: 60px; height: 60px; border-radius: 12px; object-fit: cover; }
+
+        .btn-delete { background: rgba(255,0,0,0.1); color: var(--accent); border: 1px solid rgba(255,0,0,0.2); padding: 0.7rem 1.2rem; border-radius: 12px; cursor: pointer; transition: 0.3s; }
+        .btn-delete:hover { background: var(--accent); color: #fff; }
+
+        #login-overlay { position: fixed; inset: 0; background: var(--bg-dark); z-index: 1000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(20px); }
+        .login-card { background: var(--card-bg); border: 1px solid var(--border); padding: 4rem; border-radius: 40px; width: 450px; text-align: center; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+
+<body>
+    <!-- Login Overlay -->
+    <div id="login-overlay">
+        <div class="login-card">
+            <img src="logo.png" alt="Logo" style="height: 60px; margin-bottom: 2rem;">
+            <h1 style="font-weight:900; font-size: 2rem; letter-spacing: -2px; margin-bottom: 0.5rem;">SECURE<span> ACCESS</span></h1>
+            <p style="color:var(--text-dim); margin-bottom: 3rem; font-size: 0.9rem;">Authenticated personnel only</p>
+            <div class="input-group">
+                <input type="text" id="admin-username" placeholder="Username" />
+            </div>
+            <div class="input-group">
+                <input type="password" id="admin-password" placeholder="Password" />
+                <button id="toggle-password" type="button">👁️</button>
+            </div>
+
+            <button id="login-btn" class="btn-primary" style="width: 100%;">AUTHENTICATE</button>
+            <p id="login-msg" style="color:var(--accent); margin-top: 1.5rem; font-size: 0.8rem; opacity: 0;"></p>
+        </div>
+    </div>
+
+    <!-- Sidebar Wrapper -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div style="width:10px; height:30px; background:var(--accent); border-radius:5px; box-shadow: 0 0 15px var(--glow);"></div>
+            DREAM<span> STUDIO</span>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" data-tab="overview">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Overview</span>
+            </li>
+            <li class="nav-item" data-tab="projects">
+                <i data-lucide="folder-kanban"></i>
+                <span>Projects</span>
+            </li>
+            <li class="nav-item" data-tab="add-new">
+                <i data-lucide="plus-circle"></i>
+                <span>Add Work</span>
+            </li>
+            <li class="nav-item" data-tab="partners">
+                <i data-lucide="users"></i>
+                <span>Partners</span>
+            </li>
+            <li class="nav-item" data-tab="messages">
+                <i data-lucide="mail"></i>
+                <span>Inbox</span>
+            </li>
+            <li class="nav-item" data-tab="hero-image">
+                <i data-lucide="image"></i>
+                <span>Hero Image</span>
+            </li>
+            <li class="nav-item" data-tab="settings">
+                <i data-lucide="settings"></i>
+                <span>Settings</span>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="nav-item" id="logout-btn">
+                <i data-lucide="log-out"></i>
+                <span>Logout</span>
+            </div>
+            <a href="index.html" style="text-decoration: none;">
+                <div class="nav-item">
+                    <i data-lucide="home"></i>
+                    <span>View Site</span>
+                </div>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Tab: Overview -->
+        <section id="tab-overview" class="tab-content">
+            <h1 class="section-title">Dashboard Overview</h1>
+            <p class="section-sub">Quick view of your agency metrics</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Projects</h3>
+                    <div class="value" id="stats-total-works">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>System Status</h3>
+                    <div class="value" style="color: #4caf50;">ONLINE</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Last Published</h3>
+                    <div class="value" id="stats-last-date" style="font-size: 1.2rem;">--</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <h3>Welcome back</h3>
+                <p style="color: #888;">Manage your featured works and agency settings from this panel. Changes are
+                    reflected in real-time on the main site.</p>
+            </div>
+        </section>
+
+        <!-- Tab: Projects -->
+        <section id="tab-projects" class="tab-content hidden">
+            <h1 class="section-title">Manage Projects</h1>
+            <p class="section-sub">View and edit your existing portfolio works</p>
+
+            <table class="project-table">
+                <thead>
+                    <tr>
+                        <th>Work</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Views</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="projects-list">
+                    <!-- Dynamic Rows -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Tab: Add New -->
+        <section id="tab-add-new" class="tab-content hidden">
+            <h1 class="section-title">New Collection</h1>
+            <p class="section-sub">Add a masterpiece to your portfolio</p>
+
+            <div class="glass-panel" style="max-width: 900px;">
+                <div class="input-group">
+                    <label>Project Title</label>
+                    <input type="text" id="work-title" placeholder="e.g., Cyber Horizon" />
+                </div>
+                <div class="input-group">
+                    <label>Visual Category</label>
+                    <input type="text" id="work-category" placeholder="e.g., Motion Graphics" />
+                </div>
+                <div class="input-group">
+                    <label>Media Source Type</label>
+                    <select id="media-type" style="width: 100%; padding: 1.2rem; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #fff; border-radius: 12px;">
+                        <option value="image">Static Image</option>
+                        <option value="youtube">YouTube Video</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Thumbnail / Media Link</label>
+                    <input type="text" id="work-image" placeholder="Image URL or YouTube Link (e.g., https://youtu.be/...)" />
+                </div>
+                <div class="input-group" id="file-upload-group">
+                    <label>Local Image Upload (Simulation)</label>
+                    <input type="file" id="work-file" accept="image/*" style="padding: 0.8rem;" />
+                    <p style="font-size: 0.7rem; color: #666; margin-top: 5px;">Note: File will be converted to stored data for this session.</p>
+                </div>
+                <div class="input-group">
+                    <label>Project Page Content (Page Creation)</label>
+                    <textarea id="work-page-content" placeholder="Enter HTML or Markdown for the detailed project page..." rows="6"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Short Description</label>
+                    <textarea id="work-description" placeholder="Brief project overview for the grid..." rows="3"></textarea>
+                </div>
+                <button id="add-work-btn" class="btn-primary">PUBLISH TO ARCHIVE</button>
+                <p id="add-msg" style="margin-top: 1rem; font-size: 0.8rem;"></p>
+            </div>
+        </section>
+        
+        <!-- Tab: Partners -->
+        <section id="tab-partners" class="tab-content hidden">
+            <h1 class="section-title">Partner Management</h1>
+            <p class="section-sub">Manage your strategic agency relationships</p>
+
+            <div class="glass-panel" style="max-width: 900px; margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1.5rem;">Register New Partner</h3>
+                <div class="input-group">
+                    <label>Partner Name</label>
+                    <input type="text" id="partner-name" placeholder="e.g., Cyberdyne Systems" />
+                </div>
+                <div class="input-group">
+                    <label>Partner Website URL</label>
+                    <input type="text" id="partner-url" placeholder="e.g., https://smstudios.online" />
+                </div>
+                <div class="input-group">
+                    <label>Logo Character (Optional)</label>
+                    <input type="text" id="partner-char" placeholder="A single letter (if no image)" maxlength="1" />
+                </div>
+                <div class="input-group">
+                    <label>Logo Image Upload</label>
+                    <input type="file" id="partner-file" accept="image/*" />
+                </div>
+                <button id="add-partner-btn" class="btn-primary">ADD PARTNER</button>
+                <p id="partner-msg" style="margin-top: 1rem; font-size: 0.8rem;"></p>
+            </div>
+
+            <div class="stat-card" style="max-width: 800px;">
+                <h3>Active Partners</h3>
+                <table class="project-table">
+                    <thead>
+                        <tr>
+                            <th>Preview</th>
+                            <th>Name</th>
+                            <th>Char</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="partners-list">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Tab: Hero Image (Slider Management) -->
+        <section id="tab-hero-image" class="tab-content hidden">
+            <h1 class="section-title">Works Slider</h1>
+            <p class="section-sub">Manage cinematic banners for the 'Our Works' hero</p>
+
+            <div class="glass-panel" style="max-width: 900px; margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1.5rem;">Add New Slide</h3>
+                <div class="input-group">
+                    <label>Project Title (Optional for Bulk)</label>
+                    <input type="text" id="hero-slide-title" placeholder="e.g., Nexus Protocol" />
+                </div>
+                <div class="input-group">
+                    <label>Tag (Optional)</label>
+                    <input type="text" id="hero-slide-tag" placeholder="e.g., CINEMATIC / UIUX" />
+                </div>
+                <div class="input-group">
+                    <label>Option 1: Paste Image URL (Drive/Link)</label>
+                    <input type="text" id="hero-image-url" placeholder="Paste image URL here..." />
+                </div>
+                <div class="input-group">
+                    <label>Option 2: Bulk Local Image Upload</label>
+                    <input type="file" id="hero-image-file" accept="image/*" multiple style="padding: 1.2rem; background: rgba(255, 0, 0, 0.05); border: 2px dashed var(--accent);" />
+                    <p style="font-size: 0.7rem; color: #888; margin-top: 8px;">Tip: You can select multiple images from your PC at once.</p>
+                </div>
+                
+                <div id="hero-bulk-previews" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; margin-bottom: 2rem;">
+                    <!-- Previews of selected local files will appear here -->
+                </div>
+
+                <div style="display:flex; gap: 15px;">
+                    <button id="add-slide-btn" class="btn-primary">ADD SINGLE SLIDE</button>
+                    <button id="add-bulk-btn" class="btn-primary" style="background: #222; border: 1px solid #444; display: none;">ADD ALL TO SLIDER</button>
+                </div>
+                <p id="hero-msg" style="margin-top: 1rem; font-size: 0.8rem;"></p>
+            </div>
+
+            <div class="stat-card" style="max-width: 800px;">
+                <h3>Active Slides</h3>
+                <table class="project-table">
+                    <thead>
+                        <tr>
+                            <th>Preview</th>
+                            <th>Title</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hero-slides-list">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        </section>
+        
+        <!-- Tab: Inbox (Messages) -->
+        <section id="tab-messages" class="tab-content hidden">
+            <h1 class="section-title">Inquiry Inbox</h1>
+            <p class="section-sub">Messages sent from your website's contact form</p>
+
+            <div class="stat-card">
+                <table class="project-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Sender</th>
+                            <th>Subject</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="messages-list">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Tab: Settings -->
+        <section id="tab-settings" class="tab-content hidden">
+            <h1 class="section-title">Agency Settings</h1>
+            <p class="section-sub">Configure global site preferences</p>
+
+            <div class="stat-card" style="max-width: 800px;">
+                <div class="input-group">
+                    <label>Agency Status</label>
+                    <select>
+                        <option>Accepting Commissions</option>
+                        <option>Fully Booked</option>
+                        <option>Away</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Global Accent Color</label>
+                    <div style="display:flex; gap: 10px;">
+                        <div
+                            style="width: 40px; height: 40px; background: #ff0000; border-radius: 50%; border: 2px solid #fff;">
+                        </div>
+                        <div
+                            style="width: 40px; height: 40px; background: #00ff00; border-radius: 50%; cursor: not-allowed; opacity: 0.3;">
+                        </div>
+                        <div
+                            style="width: 40px; height: 40px; background: #0000ff; border-radius: 50%; cursor: not-allowed; opacity: 0.3;">
+                        </div>
+                    </div>
+                </div>
+                <p style="color:#666; font-size: 0.8rem;">Note: Global styling options are currently locked to Red/Black
+                    theme.</p>
+                <button class="btn-primary" style="opacity: 0.5; cursor: not-allowed; margin-top: 2rem;">SAVE ALL
+                    CHANGES</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>

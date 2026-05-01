@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DREAM CREATION STUDIO | Premium Digital Agency</title>
+    <meta name="description"
+        content="A high-end digital creation agency specializing in cinematic scrollytelling and modern web design.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Lenis for Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+    <div class="noise-overlay"></div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <!-- Modern Curtain Loader -->
+    <div id="loader">
+        <div class="loader-layer layer-1"></div>
+        <div class="loader-layer layer-2"></div>
+        <div class="loader-layer layer-3"></div>
+        <div class="loader-content">
+            <div class="loader-logo-wrapper">
+                <img src="logo.png" alt="DREAM" class="loader-logo-img">
+            </div>
+        </div>
+    </div>
+
+    <!-- Animated Login Panel -->
+    <div id="auth-modal" class="auth-modal">
+        <div class="auth-overlay"></div>
+        <div class="auth-container">
+            <button class="auth-close">×</button>
+            <div class="auth-card">
+                <div class="auth-header">
+                    <img src="logo.png" alt="Logo" class="auth-logo">
+                    <h2>STUDIO<span> ACCESS</span></h2>
+                    <p>Enter your credentials or use social login</p>
+                </div>
+                
+                <div class="auth-body">
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="name@example.com">
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="••••••••">
+                    </div>
+                    <div class="auth-actions">
+                        <label class="remember-me">
+                            <input type="checkbox"> Remember me
+                        </label>
+                        <a href="#" class="forgot-pass">Forgot Password?</a>
+                    </div>
+                    <button class="btn-primary auth-submit">AUTHENTICATE</button>
+                    
+                    <div class="auth-divider">
+                        <span>OR CONTINUE WITH</span>
+                    </div>
+                    
+                    <div class="social-login" style="display: flex; justify-content: center; position: relative; width: 100%;">
+                        <button id="custom-google-btn" class="btn-google-account">
+                            <div class="g-icon-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="16px" height="16px">
+                                    <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+                                    <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+                                    <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+                                    <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C40.483,35.54,44,30.183,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                                </svg>
+                            </div>
+                            <span>Google Account</span>
+                        </button>
+                        <!-- Official Google Button (Hidden Overlay) -->
+                        <div id="g_id_signin_modal" class="g_id_signin" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); opacity: 0.01; width: 350px; height: 55px; overflow: hidden; z-index: 10;"></div>
+                    </div>
+                </div>
+                
+                <div class="auth-footer">
+                    Don't have an account? <a href="#">Create One</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cursor-follower"></div>
+
+    <nav id="navbar">
+        <div class="logo">
+            <img src="logo.png" alt="Dream Studio Logo" class="nav-logo-img">
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About US</a></li>
+            <li><a href="#partners">Partners</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li id="admin-link" style="display: none;"><a href="admin.html">Admin</a></li>
+        </ul>
+        <div class="nav-cta" style="display:flex; gap: 10px; align-items: center;">
+            <div id="g_id_onload"
+                data-client_id="112866634852-sod308055bubehdaj1hc1ik1c6arqb49.apps.googleusercontent.com"
+                data-context="signin" data-ux_mode="popup" data-callback="handleCredentialResponse"
+                data-auto_prompt="false">
+            </div>
+
+            <button class="btn-login-ghost">Login</button>
+            <button class="btn-primary-sm btn-signup-trigger">Sign In</button>
+            
+            <!-- Logged In State (Initially Hidden) -->
+            <div id="user-profile" class="user-profile" style="display: none;">
+                <img id="user-photo" src="" alt="Profile" class="user-avatar">
+                <button class="btn-logout">LOGOUT</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section id="home" class="hero">
+            <video autoplay loop muted playsinline class="hero-video">
+                <source src="bv1.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+            <div class="hero-mesh"></div>
+            <div class="hero-bg-text">DREAM</div>
+            <div class="hero-content">
+                <div class="status-badge">
+                    <span class="pulsating-dot"></span>
+                    Available for 2026 Projects
+                </div>
+                <h1 class="reveal-text">WELCOME TO DREAM<span>CREATION STUDIO</span></h1>
+                <p class="hero-sub">WHERE VIRTUAL WORLDS BEGIN. CRAFTING YOUR PERFECT FIVEM
+                    EXPERIENCE, ONE DREAM AT A TIME.</p>
+                <div class="hero-btns">
+                    <a href="#portfolio" class="btn-primary">Explore Works</a>
+                    <a href="#contact" class="btn-glass">Get in Touch</a>
+                </div>
+            </div>
+
+
+
+            <div class="scroll-indicator">
+                <div class="mouse"></div>
+                <span>Dive Deeper</span>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="about-glow"></div>
+
+            <div class="container">
+
+                <div class="modern-bento">
+                    <!-- Main Mission Card -->
+                    <div class="m-bento-card mission-premium">
+                        <div class="m-card-inner">
+                            <div class="m-header">
+                                <span class="m-label">MISSION_01 // THE MANIFESTO</span>
+                                <h2>WE DON'T JUST RECORD CLIPS. <br><span>WE DIRECT MOVIES.</span></h2>
+                            </div>
+
+                            <div class="m-grid">
+                                <div class="m-main-text">
+                                    <p>At Dream Creation Studio, we turn raw ideas into visceral cinematic moments.
+                                        We’re a FiveM specialized studio bringing servers to life through high-fidelity
+                                        storytelling.</p>
+                                    <div class="m-stats">
+                                        <div class="stat-item">
+                                            <span class="stat-num">100+</span>
+                                            <span class="stat-lbl">Projects</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-num">24/7</span>
+                                            <span class="stat-lbl">Creativity</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="m-about-text-extra">
+                                    <h3 class="about-reveal-text">BEYOND IMAGINATION</h3>
+                                    <p class="about-reveal-p">We are a collective of visionaries, designers, and
+                                        developers dedicated to redefining the FiveM landscape. Our approach combines
+                                        technical precision with artistic flair, ensuring every project is not just a
+                                        server, but a digital masterpiece.</p>
+                                    <div class="m-cta-group">
+                                        <div class="cta-mini">✦ INNOVATION</div>
+                                        <div class="cta-mini">✦ PRECISION</div>
+                                        <div class="cta-mini">✦ PASSION</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="m-footer">
+                                <div class="m-cta-line">STOP RECORDING CLIPS. START EVOLVING.</div>
+                                <div class="m-visual-scanner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Decorative Bento Item -->
+                    <div class="m-bento-card bento-small glass-card">
+                        <span class="m-label">TECH_STACK</span>
+                        <div class="tech-icons">
+                            <span class="t-tag">UE5</span>
+                            <span class="t-tag">AE</span>
+                            <span class="t-tag">PR</span>
+                            <span class="t-tag">C4D</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="works-hero" class="works-hero">
+            <div class="container">
+                <div class="works-slider-container">
+                    <div class="works-slider-wrapper" id="works-slider">
+                        <!-- Slides will be injected here dynamically -->
+                        <div class="works-slide active">
+                            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop"
+                                alt="Work 1">
+                            <div class="works-slide-content">
+                                <span class="section-tag">ARCHIVE 2026</span>
+                                <h2>NEXUS <span>PROTOCOL</span></h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Arrows -->
+                    <div class="slider-nav">
+                        <button class="nav-arrow prev" id="slider-prev">←</button>
+                        <button class="nav-arrow next" id="slider-next">→</button>
+                    </div>
+
+                    <!-- Slide Indicators -->
+                    <div class="slider-dots" id="slider-dots">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="partners" class="partners">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Synergy</span>
+                    <h2>Strategic <span>Partnerships</span></h2>
+                </div>
+
+                <div class="partners-grid-wrapper">
+                    <div class="partners-scroller">
+                        <!-- Simulated Partner Logos -->
+                        <a href="https://richie-117.github.io/Leography/" target="_blank" class="partner-card card-a">
+                            <img src="p1.png" alt="Partner A" class="partner-img">
+                        </a>
+                        <a href="https://cybernexlk.com" target="_blank" class="partner-card card-b">
+                            <img src="p2.png" alt="Partner B" class="partner-img">
+                        </a>
+                        <a href="https://smstudios.online" target="_blank" class="partner-card card-c">
+                            <img src="p3.png" alt="Partner C" class="partner-img">
+                        </a>
+                        <!-- Repeat for infinite scroll effect -->
+                    </div>
+                </div>
+
+
+
+                <div class="partnership-benefits">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">✦</div>
+                        <h3>Creative Cloud</h3>
+                        <p>Shared assets and high-speed collaboration workflows.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">✦</div>
+                        <h3>Tech Integration</h3>
+                        <p>Early access to proprietary rendering and AI tools.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">✦</div>
+                        <h3>Global Reach</h3>
+                        <p>Distribution across our premium agency network.</p>
+                    </div>
+                </div>
+        </section>
+
+        <!-- Spacer -->
+        <div class="section-spacer">
+            <div class="spacer-line"></div>
+        </div>
+
+        <section id="pricing" class="pricing">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Premium Tiers</span>
+                    <h2>ELEVATE YOUR <br /><span>EXPERIENCE</span></h2>
+                    <p class="pricing-subtitle">Select the perfect level of cinematic craftsmanship for your project.
+                    </p>
+                </div>
+
+                <div class="pricing-grid">
+                    <div class="pricing-card glass-card">
+                        <div class="p-card-glow"></div>
+                        <div class="p-tier">Essentials</div>
+                        <div class="p-price"><span>$</span>499</div>
+                        <div class="p-desc">Perfect for server teasers and short social content.</div>
+                        <ul class="p-features">
+                            <li><span class="dot"></span> 60-Second Trailer</li>
+                            <li><span class="dot"></span> 4K Resolution</li>
+                            <li><span class="dot"></span> Custom Sound FX</li>
+                            <li><span class="dot"></span> 1 Revision</li>
+                        </ul>
+                        <a href="#contact" class="btn-glass-v2">Get Started</a>
+                    </div>
+
+                    <div class="pricing-card glass-card featured">
+                        <div class="p-featured-badge">MOST POPULAR</div>
+                        <div class="p-card-glow"></div>
+                        <div class="p-tier">Cinematic</div>
+                        <div class="p-price"><span>$</span>999</div>
+                        <div class="p-desc">The industry standard for server launches and high-end promos.</div>
+                        <ul class="p-features">
+                            <li><span class="dot"></span> 3-Minute Cinematic</li>
+                            <li><span class="dot"></span> Custom Transitions</li>
+                            <li><span class="dot"></span> Advanced VFX</li>
+                            <li><span class="dot"></span> 3 Revisions</li>
+                        </ul>
+                        <a href="#contact" class="btn-primary-v2">Launch Vision</a>
+                    </div>
+
+                    <div class="pricing-card glass-card">
+                        <div class="p-card-glow"></div>
+                        <div class="p-tier">Legendary</div>
+                        <div class="p-price"><span>$</span>1999</div>
+                        <div class="p-desc">Full-scale production for the ultimate immersive experience.</div>
+                        <ul class="p-features">
+                            <li><span class="dot"></span> 10-Minute Narrative</li>
+                            <li><span class="dot"></span> Custom 3D Assets</li>
+                            <li><span class="dot"></span> Full Branding Kit</li>
+                            <li><span class="dot"></span> Unlimited Support</li>
+                        </ul>
+                        <a href="#contact" class="btn-glass-v2">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spacer -->
+        <div class="section-spacer">
+            <div class="spacer-line"></div>
+        </div>
+
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="contact-grid">
+                    <div class="contact-intel">
+                        <span class="section-tag">// CONNECT</span>
+                        <h2>READY TO START YOUR <span>EVOLUTION?</span></h2>
+                        <p>Tell us about your project or just say hello. We typically respond within 24 hours.</p>
+
+                        <div class="contact-details">
+                            <div class="detail-item">
+                                <span class="d-lbl">INQUIRIES</span>
+                                <span class="d-val">dreamcreationstudio.69@gmail.com</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="d-lbl">LOCATION</span>
+                                <span class="d-val">Sri Lanka</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-form-wrap">
+                        <form class="contact-form-premium" id="contact-form">
+                            <div class="form-row">
+                                <div class="p-input-group">
+                                    <input type="text" id="c-name" placeholder="Full Name" required>
+                                    <span class="p-line"></span>
+                                </div>
+                                <div class="p-input-group">
+                                    <input type="email" id="c-email" placeholder="Email Address" required>
+                                    <span class="p-line"></span>
+                                </div>
+                            </div>
+                            <div class="p-input-group">
+                                <input type="text" id="c-subject" placeholder="Subject / Service" required>
+                                <span class="p-line"></span>
+                            </div>
+                            <div class="p-input-group">
+                                <textarea id="c-message" placeholder="How can we help?" rows="4"></textarea>
+                                <span class="p-line"></span>
+                            </div>
+                            <button type="submit" class="btn-primary" id="c-submit">
+                                Launch Inquiry <span>→</span>
+                            </button>
+                            <p id="c-msg" style="margin-top: 15px; font-size: 0.9rem; font-weight: 600;"></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="studio-footer">
+        <div class="container">
+
+            <div class="copyright-v2">
+                <div class="c-v2-line"></div>
+                <div class="copyright-content-v2">
+                    <div class="c-v2-branding">
+                        <span class="c-v2-year">© 2026</span>
+                        <span class="c-v2-studio">SM Studios. All rights reserved</span>
+                    </div>
+
+                    <a href="https://smstudios.online" target="_blank" class="c-v2-badge">
+                        <span class="pulsating-dot"></span>
+                        DESIGNED BY SM STUDIOS
+                    </a>
+
+                    <div class="c-v2-meta">
+                        <span class="c-v2-loc">SRI LANKA</span>
+                        <a href="#navbar" class="c-v2-top">REPLAY EXPERIENCE <span>↑</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
