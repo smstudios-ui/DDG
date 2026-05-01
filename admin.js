@@ -3,7 +3,9 @@
 // Hardcoded credentials
 const ADMIN_USER = 'admin';
 const ADMIN_PASS = 'password123';
-const API_URL = 'http://localhost:5000/api';
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? 'http://localhost:5000/api' 
+    : '/api';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Elements
